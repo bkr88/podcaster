@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Chip, Grid, TextField } from '@mui/material';
 
@@ -7,6 +8,9 @@ import { fetchPodcastList } from '../helpers/home-helpers';
 import type { Podcast } from '../types';
 
 const Home = () => {
+  let list: Podcast[] = [];
+  const [filter, setFilter] = useState('');
+
   const { isPending, isError, data, error } = useQuery<Podcast[]>({
     queryKey: ['podcasts'],
     queryFn: fetchPodcastList,
@@ -23,18 +27,31 @@ const Home = () => {
 
   if (!data) {
     console.error('No data');
+  } else {
+    list = data;
+  }
+
+  if (data && filter) {
+    list = data.filter((item) => item.title!.toLowerCase().includes(filter.toLowerCase()));
   }
 
   return (
     <Grid container spacing={4}>
       <Grid size={4} offset={8}>
-        <Chip label={data!.length} />
+        <Chip label={list.length} />
 
-        <TextField size='small' id='outlined-basic' label='Outlined' variant='outlined' />
+        <TextField
+          size='small'
+          id='outlined-basic'
+          label='Outlined'
+          variant='outlined'
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+        />
       </Grid>
 
       <Grid size={12}>
-        <PodcastList items={data!} />
+        <PodcastList items={list} />
       </Grid>
     </Grid>
   );

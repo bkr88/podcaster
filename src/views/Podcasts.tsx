@@ -50,7 +50,7 @@ const Podcasts = () => {
 
         <Grid size={12}>
           <Card sx={{ padding: 2, marginTop: 2 }}>
-            <EpisodesList items={data!.episodes!} />
+            <EpisodesList podcastId={postId} />
           </Card>
         </Grid>
       </Grid>
