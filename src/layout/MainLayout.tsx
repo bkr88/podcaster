@@ -1,11 +1,13 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Link } from '@mui/material';
 import { Outlet } from 'react-router';
 
 const MainLayout = () => {
   return (
     <Container>
       <Grid container spacing={2}>
-        <Grid size={10}>Header</Grid>
+        <Grid size={10}>
+          <Link href='/'>Podcaster</Link>
+        </Grid>
 
         <Grid size={2}>Loading</Grid>
 
