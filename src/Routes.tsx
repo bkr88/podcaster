@@ -3,8 +3,8 @@ import { Routes as ReactRoutes, Route } from 'react-router';
 import MainLayout from './layout/MainLayout';
 
 import Home from './views/Home';
-import Podcasts from './views/Podcasts';
-import Episodes from './views/Episodes';
+import PodcastDetail from './views/PodcastDetail';
+import EpisodeDetail from './views/EpisodeDetail';
 
 const Routes = () => {
   return (
@@ -13,9 +13,9 @@ const Routes = () => {
         <Route index element={<Home />} />
 
         <Route path='podcast/:podcastId'>
-          <Route index element={<Podcasts />} />
+          <Route index element={<PodcastDetail />} />
 
-          <Route path='episode/:episodeId' element={<Episodes />} />
+          <Route path='episode/:episodeId' element={<EpisodeDetail />} />
         </Route>
       </Route>
     </ReactRoutes>

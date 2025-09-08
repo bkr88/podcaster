@@ -7,7 +7,7 @@ import { Card, Grid } from '@mui/material';
 import PodcastCard from '../components/PodcastCard';
 import EpisodesList from '../components/EpisodesList';
 
-const Podcasts = () => {
+const PodcastDetail = () => {
   let postId = '';
   const { podcastId } = useParams();
 
@@ -58,4 +58,4 @@ const Podcasts = () => {
   );
 };
 
-export default Podcasts;
+export default PodcastDetail;

@@ -60,14 +60,19 @@ const EpisodesList = ({ podcastId }: EpisodesListProps) => {
         </TableHead>
 
         <TableBody>
-          {data!.map((row) => (
-            <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          {data!.map((row, index) => (
+            <TableRow
+              key={`episode-${index}`}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
               <TableCell component='th' scope='row'>
                 <Link onClick={() => navigate(`/podcast/${podcastId}/episode/${row.id}`)}>
                   {row.name}
                 </Link>
               </TableCell>
+
               <TableCell align='right'>{row.date}</TableCell>
+
               <TableCell align='right'>{row.duration}</TableCell>
             </TableRow>
           ))}
