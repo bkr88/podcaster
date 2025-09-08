@@ -1,42 +1,40 @@
-import { useEffect, useState } from 'react';
-
+import { useQuery } from '@tanstack/react-query';
 import { Chip, Grid, TextField } from '@mui/material';
-
-import type { Podcast } from '../types';
 
 import PodcastList from '../components/PodcastList';
 
-import { mapRawPodcast } from '../helpers/home-helpers';
+import { fetchPodcastList } from '../helpers/home-helpers';
+import type { Podcast } from '../types';
 
 const Home = () => {
-  const [list, setList] = useState<Podcast[]>([]);
+  const { isPending, isError, data, error } = useQuery<Podcast[]>({
+    queryKey: ['podcasts'],
+    queryFn: fetchPodcastList,
+    staleTime: 24 * 60 * 60 * 1000,
+  });
 
-  const fetchList = async () => {
-    const response = await fetch(
-      'https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json'
-    );
+  if (isError) {
+    console.error(error);
+  }
 
-    if (response.ok) {
-      const data = await response.json();
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
 
-      setList(mapRawPodcast(data.feed.entry));
-    }
-  };
-
-  useEffect(() => {
-    fetchList();
-  }, []);
+  if (!data) {
+    console.error('No data');
+  }
 
   return (
-    <Grid container>
+    <Grid container spacing={4}>
       <Grid size={4} offset={8}>
-        <Chip label={list.length} />
+        <Chip label={data!.length} />
 
         <TextField size='small' id='outlined-basic' label='Outlined' variant='outlined' />
       </Grid>
 
       <Grid size={12}>
-        <PodcastList items={list} />
+        <PodcastList items={data!} />
       </Grid>
     </Grid>
   );
