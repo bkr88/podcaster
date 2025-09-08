@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import {
+  Link,
   Paper,
   Table,
   TableBody,
@@ -10,7 +12,7 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { fetchEpisodes } from '../helpers/podcasts-helpers';
+import { fetchEpisodes } from '../helpers/episodes-helpers';
 import type { Episode } from '../types';
 
 interface EpisodesListProps {
@@ -18,6 +20,8 @@ interface EpisodesListProps {
 }
 
 const EpisodesList = ({ podcastId }: EpisodesListProps) => {
+  const navigate = useNavigate();
+
   const { isPending, isError, data, error } = useQuery<Episode[]>({
     queryKey: [`podcastEpisodes:${podcastId}`],
     queryFn: async () => {
@@ -38,6 +42,8 @@ const EpisodesList = ({ podcastId }: EpisodesListProps) => {
 
   if (!data) {
     console.error('No data');
+
+    return <div>No data...</div>;
   }
 
   return (
@@ -57,7 +63,9 @@ const EpisodesList = ({ podcastId }: EpisodesListProps) => {
           {data!.map((row) => (
             <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component='th' scope='row'>
-                {row.label}
+                <Link onClick={() => navigate(`/podcast/${podcastId}/episode/${row.id}`)}>
+                  {row.name}
+                </Link>
               </TableCell>
               <TableCell align='right'>{row.date}</TableCell>
               <TableCell align='right'>{row.duration}</TableCell>

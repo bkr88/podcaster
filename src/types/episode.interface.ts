@@ -1,6 +1,14 @@
+export interface RawEpisode {
+  collectionId: number;
+  trackName: string;
+  artistName: string;
+  releaseDate: string;
+  trackTimeMillis: number;
+}
 export interface Episode {
-  label: string;
+  id: string;
+  name: string;
+  artist: string;
   date: string;
   duration: string;
-  id: string;
 }

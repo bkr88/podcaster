@@ -1,7 +1,6 @@
-import type { Episode, Podcast } from '../types';
-import type { RawPodcastBP } from '../types/podcast.interface';
+import type { Podcast, RawPodcastDetail } from '../types';
 
-const mapPodcastBP = (item: RawPodcastBP): Podcast => ({
+const mapPodcastDetail = (item: RawPodcastDetail): Podcast => ({
   id: item.collectionId.toString(),
   name: item.collectionName,
   artist: item.artistName,
@@ -19,26 +18,10 @@ export const fetchPodcastItem = async (podcastId: string): Promise<Podcast | und
   if (response.ok) {
     const data = await response.json();
     const dataParsed = JSON.parse(data.contents).results[0];
+    const dataMapped = mapPodcastDetail(dataParsed);
 
-    return mapPodcastBP(dataParsed);
+    return dataMapped;
   } else {
     return undefined;
-  }
-};
-
-export const fetchEpisodes = async (podcastId: string): Promise<Episode[]> => {
-  const response = await fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(
-      `https://podcasts.apple.com/us/podcast/the-joe-budden-podcast/id${podcastId}?uo=4`
-    )}`
-  );
-
-  if (response.ok) {
-    const data = await response.json();
-    const dataParsed = JSON.parse(data.contents).results[0];
-
-    return dataParsed;
-  } else {
-    return [];
   }
 };

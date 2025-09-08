@@ -1,0 +1,49 @@
+import type { RawEpisode, Episode } from '../types';
+
+const millisToHMS = (ms: number): string => {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return [
+    hours > 0 ? String(hours).padStart(2, '0') : '00',
+    String(minutes).padStart(2, '0'),
+    String(seconds).padStart(2, '0'),
+  ].join(':');
+};
+
+const formatDate = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+const mapPodcastEpisodes = (item: RawEpisode): Episode => ({
+  id: item.collectionId.toString(),
+  name: item.trackName,
+  artist: item.artistName,
+  date: formatDate(item.releaseDate),
+  duration: millisToHMS(item.trackTimeMillis),
+});
+
+export const fetchEpisodes = async (podcastId: string): Promise<Episode[]> => {
+  const response = await fetch(
+    `https://api.allorigins.win/get?url=${encodeURIComponent(
+      `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode&limit=1 `
+    )}`
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    const dataParsed: RawEpisode[] = JSON.parse(data.contents).results;
+    const dataMapped = dataParsed.map((item) => mapPodcastEpisodes(item));
+
+    return dataMapped;
+  } else {
+    return [];
+  }
+};

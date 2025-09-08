@@ -1,5 +1,3 @@
-import type { Episode } from './episode.interface';
-
 export interface RawPodcastApple {
   id: { attributes: { 'im:id': string } };
   'im:name': { label: string };
@@ -9,7 +7,7 @@ export interface RawPodcastApple {
   summary: { label: string };
 }
 
-export interface RawPodcastBP {
+export interface RawPodcastDetail {
   artistName: string;
   collectionName: string;
   artworkUrl600: string;
@@ -25,5 +23,7 @@ export interface Podcast {
   title?: string;
   summary?: string;
   episodeCount?: string;
-  episodes?: Episode[];
+  episodes?: Podcast[];
+  date?: string;
+  duration?: string;
 }

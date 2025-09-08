@@ -1,2 +1,2 @@
-export type { Podcast, RawPodcastApple } from './podcast.interface';
-export type { Episode } from './episode.interface';
+export type { Podcast, RawPodcastApple, RawPodcastDetail } from './podcast.interface';
+export type { Episode, RawEpisode } from './episode.interface';
