@@ -15,10 +15,12 @@ const PodcastItem = ({ item }: PodcastItemProps) => {
     <Card>
       <CardActionArea onClick={() => navigate(`/podcast/${item.id}`)}>
         <CardMedia component='img' height='140' image={item.image} alt={`img-${item.id}`} />
+
         <CardContent>
           <Typography gutterBottom variant='h5' component='div'>
             {item.name}
           </Typography>
+
           <Typography variant='body2' sx={{ color: 'text.secondary' }}>
             {item.artist}
           </Typography>
