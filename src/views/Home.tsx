@@ -17,19 +17,15 @@ const Home = () => {
     staleTime: 24 * 60 * 60 * 1000,
   });
 
-  if (isError) {
-    console.error(error);
-  }
-
   if (isPending) {
     return <div>Loading...</div>;
   }
 
-  if (!data) {
-    console.error('No data');
-  } else {
-    list = data;
+  if (isError || !data) {
+    console.error(error || 'No data');
   }
+
+  list = data!;
 
   if (data && filter) {
     list = data.filter((item) => item.title!.toLowerCase().includes(filter.toLowerCase()));
@@ -37,15 +33,15 @@ const Home = () => {
 
   return (
     <Grid container spacing={4}>
-      <Grid size={4} offset={8}>
-        <Chip label={list.length} />
+      <Grid size={4} offset={8} sx={{ textAlign: 'right' }}>
+        <Chip label={list.length} sx={{ marginTop: 0.5 }} />
 
         <TextField
           size='small'
-          id='outlined-basic'
-          label='Outlined'
+          label='Search'
           variant='outlined'
           value={filter}
+          sx={{ marginLeft: 2 }}
           onChange={(event) => setFilter(event.target.value)}
         />
       </Grid>

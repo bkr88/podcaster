@@ -8,7 +8,7 @@ const mapPodcastDetail = (item: RawPodcastDetail): Podcast => ({
   episodeCount: item.trackCount.toString(),
 });
 
-export const fetchPodcastItem = async (podcastId: string): Promise<Podcast | undefined> => {
+const fetchPodcastItem = async (podcastId: string): Promise<Podcast | undefined> => {
   const response = await fetch(
     `https://api.allorigins.win/get?url=${encodeURIComponent(
       `https://itunes.apple.com/lookup?id=${podcastId!}`
@@ -25,3 +25,11 @@ export const fetchPodcastItem = async (podcastId: string): Promise<Podcast | und
     return undefined;
   }
 };
+
+export function getPodcast(podcastId: string) {
+  return async () => {
+    const podcast = await fetchPodcastItem(podcastId);
+    if (!podcast) throw new Error('Podcast not found');
+    return podcast;
+  };
+}

@@ -1,11 +1,13 @@
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
-import type { Podcast } from '../types';
-import { fetchPodcastItem } from '../helpers/podcasts-helpers';
 import { Card, Grid } from '@mui/material';
-import PodcastCard from '../components/PodcastCard';
+
+import { getPodcast } from '../helpers/podcasts-helpers';
+import { staleTime } from '../constants';
 import EpisodesList from '../components/EpisodesList';
+import PodcastCard from '../components/PodcastCard';
+import type { Podcast } from '../types';
 
 const PodcastDetail = () => {
   let postId = '';
@@ -15,24 +17,18 @@ const PodcastDetail = () => {
 
   const { isPending, isError, data, error } = useQuery<Podcast>({
     queryKey: [`podcast:${postId}`],
-    queryFn: async () => {
-      const podcast = await fetchPodcastItem(postId);
-      if (!podcast) throw new Error('Podcast not found');
-      return podcast;
-    },
-    staleTime: 24 * 60 * 60 * 1000,
+    queryFn: getPodcast(postId),
+    staleTime,
   });
-
-  if (isError) {
-    console.error(error);
-  }
 
   if (isPending) {
     return <div>Loading...</div>;
   }
 
-  if (!data) {
-    console.error('No data');
+  if (isError || !data) {
+    console.error(error || 'No data');
+
+    return <div>No data...</div>;
   }
 
   return (
@@ -49,7 +45,7 @@ const PodcastDetail = () => {
         </Grid>
 
         <Grid size={12}>
-          <Card sx={{ padding: 2, marginTop: 2 }}>
+          <Card sx={{ marginTop: 2 }}>
             <EpisodesList podcastId={postId} />
           </Card>
         </Grid>

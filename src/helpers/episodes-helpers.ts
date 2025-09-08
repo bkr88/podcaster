@@ -31,10 +31,10 @@ const mapEpisode = (item: RawEpisode): Episode => ({
   url: item.feedUrl,
 });
 
-export const fetchEpisodes = async (podcastId: string): Promise<Episode[]> => {
+const fetchEpisodes = async (podcastId: string): Promise<Episode[]> => {
   const response = await fetch(
     `https://api.allorigins.win/get?url=${encodeURIComponent(
-      `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode&limit=1 `
+      `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode&limit=9 `
     )}`
   );
 
@@ -49,20 +49,32 @@ export const fetchEpisodes = async (podcastId: string): Promise<Episode[]> => {
   }
 };
 
-export const fetchEpisode = async (podcastId: string, episodeId: string): Promise<Episode> => {
-  const response = await fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(
-      `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode&limit=1 `
-    )}`
-  );
+export function getEpisodes(podcastId: string) {
+  return async () => {
+    const episodes = await fetchEpisodes(podcastId);
 
-  if (response.ok) {
-    const data = await response.json();
-    const dataParsed: RawEpisode[] = JSON.parse(data.contents).results;
-    const dataMapped = dataParsed.map((item) => mapEpisode(item));
+    if (!episodes) throw new Error('Podcast episodes not found');
 
-    return dataMapped.find((episode) => episode.id === episodeId)!;
+    return episodes;
+  };
+}
+
+const fetchEpisode = async (podcastId: string, episodeId: string): Promise<Episode> => {
+  const episodes = await fetchEpisodes(podcastId);
+
+  if (episodes.length > 0) {
+    return episodes.find((episode) => episode.id === episodeId)!;
   } else {
     return Promise.reject('Episode not found');
   }
 };
+
+export function getEpisode(podcastId: string, episodeId: string) {
+  return async () => {
+    const podcast = await fetchEpisode(podcastId, episodeId);
+
+    if (!podcast) throw new Error('Podcast episode not found');
+
+    return podcast;
+  };
+}

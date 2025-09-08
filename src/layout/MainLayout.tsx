@@ -1,20 +1,38 @@
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { Container, Grid, Link } from '@mui/material';
-// import Loading from '../components/Loading';
 
 const MainLayout = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const isHome = location.pathname === '/';
 
   return (
     <Container>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ paddingTop: 2, paddingBottom: 3 }}>
         <Grid size={10}>
-          <Link onClick={() => navigate('/')}>PODCASTER</Link>
+          <Link
+            sx={{
+              fontSize: 24,
+              color: 'black',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              fontFamily: 'sans-serif',
+            }}
+            onClick={() => navigate('/')}
+          >
+            PODCASTER
+          </Link>
         </Grid>
 
-        {/* <Grid size={2}>
-          <Loading />
-        </Grid> */}
+        {!isHome && (
+          <Grid size={2} textAlign='right'>
+            <Link sx={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+              Back
+            </Link>
+          </Grid>
+        )}
 
         <Grid size={12}>
           <Outlet />

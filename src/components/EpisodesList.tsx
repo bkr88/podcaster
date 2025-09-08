@@ -12,7 +12,8 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { fetchEpisodes } from '../helpers/episodes-helpers';
+import { getEpisodes } from '../helpers/episodes-helpers';
+import { staleTime } from '../constants';
 import type { Episode } from '../types';
 
 interface EpisodesListProps {
@@ -24,24 +25,16 @@ const EpisodesList = ({ podcastId }: EpisodesListProps) => {
 
   const { isPending, isError, data, error } = useQuery<Episode[]>({
     queryKey: [`podcastEpisodes:${podcastId}`],
-    queryFn: async () => {
-      const episodes = await fetchEpisodes(podcastId);
-      if (!episodes) throw new Error('Podcast episodes not found');
-      return episodes;
-    },
-    staleTime: 24 * 60 * 60 * 1000,
+    queryFn: getEpisodes(podcastId),
+    staleTime,
   });
-
-  if (isError) {
-    console.error(error);
-  }
 
   if (isPending) {
     return <div>Loading...</div>;
   }
 
-  if (!data) {
-    console.error('No data');
+  if (isError || !data) {
+    console.error(error || 'No data');
 
     return <div>No data...</div>;
   }

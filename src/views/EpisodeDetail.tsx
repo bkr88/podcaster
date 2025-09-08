@@ -1,33 +1,24 @@
-import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 
+import { getEpisode } from '../helpers/episodes-helpers';
+import { getPodcast } from '../helpers/podcasts-helpers';
+import { staleTime } from '../constants';
+import PodcastCard from '../components/PodcastCard';
 import type { Episode, Podcast } from '../types';
 
-import PodcastCard from '../components/PodcastCard';
-import { fetchEpisode } from '../helpers/episodes-helpers';
-import { fetchPodcastItem } from '../helpers/podcasts-helpers';
-
 const EpisodeDetail = () => {
-  let podId = '';
-  let epiId = '';
   const { podcastId, episodeId } = useParams();
 
-  const [media, setMedia] = useState('');
-
-  podId = podcastId || '';
-  epiId = episodeId || '';
+  const podId = podcastId || '';
+  const epiId = episodeId || '';
 
   const { data: podcast } = useQuery<Podcast>({
     queryKey: [`podcast:${podId}`],
-    queryFn: async () => {
-      const podcast = await fetchPodcastItem(podId);
-      if (!podcast) throw new Error('Podcast not found');
-      return podcast;
-    },
-    staleTime: 24 * 60 * 60 * 1000,
+    queryFn: getPodcast(podId),
+    staleTime,
   });
 
   const {
@@ -37,24 +28,18 @@ const EpisodeDetail = () => {
     error,
   } = useQuery<Episode>({
     queryKey: [`episode:${epiId}`],
-    queryFn: async () => {
-      const podcast = await fetchEpisode(podId, epiId);
-      if (!podcast) throw new Error('Podcast episode not found');
-      return podcast;
-    },
-    staleTime: 24 * 60 * 60 * 1000,
+    queryFn: getEpisode(podId, epiId),
+    staleTime,
   });
-
-  if (isError) {
-    console.error(error);
-  }
 
   if (isPending) {
     return <div>Loading...</div>;
   }
 
-  if (!episode) {
-    console.error('No data');
+  if (isError || !episode) {
+    console.error(error || 'No data');
+
+    return <div>No data...</div>;
   }
 
   return (
@@ -76,14 +61,12 @@ const EpisodeDetail = () => {
 
             <br />
 
-            {media && (
-              <Container>
-                <audio controls>
-                  <source src={media} />
-                  Tu navegador no soporta el elemento de audio.
-                </audio>
-              </Container>
-            )}
+            <Container>
+              <audio controls>
+                <source src={episode?.url} />
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+            </Container>
           </CardContent>
         </Card>
       </Grid>
