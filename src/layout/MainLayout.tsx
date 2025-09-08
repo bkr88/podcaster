@@ -1,23 +1,27 @@
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { Container, Grid, Link } from '@mui/material';
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 
-const MainLayout = () => (
-  <Container>
-    <Grid container spacing={2}>
-      <Grid size={10}>
-        <Link href='/'>PODCASTER</Link>
-      </Grid>
+const MainLayout = () => {
+  const navigate = useNavigate();
 
-      <Grid size={2}>
-        <Loading />
-      </Grid>
+  return (
+    <Container>
+      <Grid container spacing={2}>
+        <Grid size={10}>
+          <Link onClick={() => navigate('/')}>PODCASTER</Link>
+        </Grid>
 
-      <Grid size={12}>
-        <Outlet />
+        {/* <Grid size={2}>
+          <Loading />
+        </Grid> */}
+
+        <Grid size={12}>
+          <Outlet />
+        </Grid>
       </Grid>
-    </Grid>
-  </Container>
-);
+    </Container>
+  );
+};
 
 export default MainLayout;

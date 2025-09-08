@@ -1,15 +1,21 @@
-// import { useNavigation } from 'react-router';
+import { useLocation } from 'react-router';
+import { useEffect, useState } from 'react';
 
 const Loading = () => {
-  // const navigation = useNavigation();
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
 
-  // const isLoading = navigation.state === 'loading';
+  useEffect(() => {
+    setLoading(true);
 
-  // if (!isLoading) {
-  //   return null;
-  // }
+    const timeout = setTimeout(() => setLoading(false), 300);
 
-  return 'Loading...';
+    return () => clearTimeout(timeout);
+  }, [location]);
+
+  if (!loading) return null;
+
+  return <span>Loading...</span>;
 };
 
 export default Loading;
