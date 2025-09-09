@@ -14,7 +14,7 @@ const MainLayout = () => {
           <Link
             sx={{
               fontSize: 24,
-              color: 'black',
+              color: 'primary',
               cursor: 'pointer',
               fontWeight: 'bold',
               textDecoration: 'none',

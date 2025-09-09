@@ -34,7 +34,7 @@ const Home = () => {
   return (
     <Grid container spacing={4}>
       <Grid size={4} offset={8} sx={{ textAlign: 'right' }}>
-        <Chip label={list.length} sx={{ marginTop: 0.5 }} />
+        <Chip label={list.length} sx={{ marginTop: 0.5 }} color='primary' />
 
         <TextField
           size='small'
