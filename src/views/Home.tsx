@@ -28,7 +28,7 @@ const Home = () => {
   list = data!;
 
   if (data && filter) {
-    list = data.filter((item) => item.title!.toLowerCase().includes(filter.toLowerCase()));
+    list = data.filter((item) => item.name!.toLowerCase().includes(filter.toLowerCase()));
   }
 
   return (

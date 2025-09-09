@@ -10,7 +10,7 @@ interface PodcastListProps {
 const PodcastList = ({ items }: PodcastListProps) => (
   <Grid container spacing={2}>
     {items.map((item) => (
-      <Grid size={3} key={item.id}>
+      <Grid size={3} key={item.id} data-testid='podcast-card'>
         <PodcastItem item={item} />
       </Grid>
     ))}
