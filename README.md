@@ -1,69 +1,56 @@
-# React + TypeScript + Vite
+# Podcaster
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ejercicio técnico para vacante de Frontend Developer en React.
 
-Currently, two official plugins are available:
+Esta aplicación permite buscar y explorar podcasts, mostrando detalles y episodios de cada uno. El objetivo fue demostrar buenas prácticas en React moderno, manejo de estado remoto, testing y uso de componentes UI profesionales.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack y decisiones técnicas
 
-## Expanding the ESLint configuration
+- **React + TypeScript:** Para tipado estático y robustez.
+- **Vite:** Por su rapidez en desarrollo y build.
+- **MUI (Material UI):** Para construir una UI consistente y productiva. Estoy bastante familiarizado con ella y utilicé Grids, Tables, Cards, etc.
+- **React Query (TanStack):** Para manejo eficiente de datos remotos y caché.
+- **React Router:** Para navegación declarativa.
+- **Testing Library + Vitest:** Para tests orientados al usuario y mocks de API.
+- **ESLint:** Para mantener calidad y estilo de código.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Estructura del proyecto
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- `src/` — Código fuente de la aplicación.
+  - `components/` — Componentes reutilizables.
+  - `views/` — Vistas principales (páginas).
+  - `helpers/` — Funciones auxiliares y llamadas a APIs.
+  - `types/` — Tipos TypeScript.
+- `public/` — Archivos estáticos.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Buenas prácticas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Componentes funcionales y hooks.
+- Separación de lógica y presentación.
+- Tipado estricto con TypeScript.
+- Tests unitarios y de integración.
+- Accesibilidad básica en formularios y navegación.
+
+## Scripts principales
+
+- `pnpm dev` — Inicia el servidor de desarrollo con HMR.
+- `pnpm build` — Genera la build de producción.
+- `pnpm preview` — Previsualiza la build de producción.
+- `pnpm test` — Ejecuta los tests con Vitest.
+
+## Testing
+
+Se utiliza **Vitest** y **React Testing Library** para los tests.  
+Los tests pueden mockear llamadas a la API y hooks de React Router.
+
+```bash
+npm install
+npm test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Cómo correr el proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm dev
 ```
