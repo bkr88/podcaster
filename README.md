@@ -4,6 +4,10 @@ Ejercicio técnico para vacante de Frontend Developer en React.
 
 Esta aplicación permite buscar y explorar podcasts, mostrando detalles y episodios de cada uno. El objetivo fue demostrar buenas prácticas en React moderno, manejo de estado remoto, testing y uso de componentes UI profesionales.
 
+## Problemas
+
+No pude conseguir la URL de cada podcast para poder asignarlo al elemento de <audio> y así poder reproducir el podcast, de resto creo que abarque todo.
+
 ## Stack y decisiones técnicas
 
 - **React + TypeScript:** Para tipado estático y robustez.
