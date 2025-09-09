@@ -18,7 +18,6 @@ const MainLayout = () => {
               cursor: 'pointer',
               fontWeight: 'bold',
               textDecoration: 'none',
-              fontFamily: 'sans-serif',
             }}
             onClick={() => navigate('/')}
           >
